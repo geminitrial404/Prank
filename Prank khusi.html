@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            /* Subtle SVG noise texture. URL-encoded for reliability. */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+        }
+        /* Hide all screens by default */
+        .screen {
+            display: none;
+        }
+        /* Show the active screen */
+        .screen.active {
+            display: flex;
+        }
+        /* Style for the runaway button */
+        #prankButton {
+            position: absolute;
+            transition: all 0.1s ease-out;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); /* blue-500 shadow */
+        }
+        /* Style for the answer options */
+        .answer-option {
+            border: 2px solid #e5e7eb; /* gray-200 */
+            transition: all 0.2s;
+        }
+        .answer-option:hover {
+            border-color: #3b82f6; /* blue-500 */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: #eff6ff; /* blue-50 */
+        }
+        
+        /* The jarring result screen */
+        #resultScreen {
+            background-color: #7f1d1d; /* red-900 */
+            /* Darker noise texture for the error screen */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+
+        /* Fake logo style */
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem; /* 24px */
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #1e3a8a, #3b82f6); /* blue-900 to blue-500 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Screen 1: Start Screen -->
+    <div id="startScreen" class="screen active flex-col items-center justify-center min-h-screen p-6">
+        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl max-w-lg w-full text-center border border-gray-200">
+            <div class="logo mb-4">Brainee analytics</div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Cognitive Integrity Assessment</h1>
+            <p class="text-base sm:text-lg text-slate-600 mb-8">This 3-step assessment will validate your intelligence and motor-skill functions. Please complete it in a quiet environment.</p>
+            <button onclick="showScreen('q1Screen')" class="w-full bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30">
+                Begin Assessment
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Question 1 -->
+    <div id="q1Screen" class="screen flex-col items-center justify-center min-h-screen p-6">
+        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
+            <p class="text-sm font-medium text-blue-600 mb-3">Step 1 of 3: Logical Reasoning</p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 10%"></div>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-800 mb-6">Which number completes the sequence: 1, 2, 3, __?</h2>
+            <div class="space-y-3">
+                <button onclick="showScreen('q2Screen')" class="answer-option w-full text-left bg-slate-50 p-4 rounded-lg text-base text-slate-700 font-medium">A) 5</button>
+                <button onclick="showScreen('q2Screen')" class="answer-option w-full text-left bg-slate-50 p-4 rounded-lg text-base text-slate-700 font-medium">B) 4</button>
+                <button onclick="showScreen('q2Screen')" class="answer-option w-full text-left bg-slate-50 p-4 rounded-lg text-base text-slate-700 font-medium">C) 9</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 3: Question 2 -->
+    <div id="q2Screen" class="screen flex-col items-center justify-center min-h-screen p-6">
+        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
+            <p class="text-sm font-medium text-blue-600 mb-3">Step 2 of 3: Object Identification</p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 33%"></div>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-800 mb-6">What color is the sky on a clear day?</h2>
+            <div class="space-y-3">
+                <button onclick="showScreen('q3Screen')" class="answer-option w-full text-left bg-slate-50 p-4 rounded-lg text-base text-slate-700 font-medium">A) Green</button>
+                <button onclick="showScreen('q3Screen')" class="answer-option w-full text-left bg-slate-50 p-4 rounded-lg text-base text-slate-700 font-medium">B) Orange</button>
+                <button onclick="showScreen('q3Screen')" class="answer-option w-full text-left bg-slate-50 p-4 rounded-lg text-base text-slate-700 font-medium">C) Blue</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 4: Question 3 (The Prank) -->
+    <div id="q3Screen" class="screen flex-col items-center justify-center min-h-screen p-6 relative overflow-hidden">
+        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl max-w-lg w-full border border-gray-200 z-10">
+            <p class="text-sm font-medium text-blue-600 mb-3">Step 3 of 3: Motor Skill Validation</p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 66%"></div>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-800 mb-6">Please click the "Submit" button to calibrate your cursor and finalize the assessment.</h2>
+            <p id="tryCounter" class="text-lg text-red-600 font-medium h-6 text-center"></p>
+        </div>
+        
+        <!-- The Runaway Button -->
+        <button id="prankButton" class="bg-blue-600 text-white font-bold py-3 px-10 rounded-lg text-xl z-20" style="top: 70%; left: 45%;">
+            Submit
+        </button>
+    </div>
+    
+    <!-- Screen 5: The Result/Punchline -->
+    <div id="resultScreen" class="screen flex-col items-center justify-center min-h-screen p-6 text-white">
+        <div class="max-w-lg w-full text-center p-6">
+            <h2 class="text-3xl font-bold mb-4 text-red-200">Assessment Terminated</h2>
+            <p class="text-2xl mb-8 text-red-200">Analyzing failure...</p>
+            
+            <div id="loadingBar" class="w-full bg-red-800 rounded-full h-4 mb-12 overflow-hidden border-2 border-red-700">
+                <div id="progressBar" class="bg-yellow-300 h-full" style="width: 0%"></div>
+            </div>
+            
+            <!-- This part is hidden until the progress bar finishes -->
+            <div id="finalResult" class="hidden">
+                <h1 class="text-8xl sm:text-9xl font-black text-yellow-300 mb-4">FAIL</h1>
+                <p class="text-2xl sm:text-3xl font-bold mb-6 text-white">Result: Certified Dumb Idiot</p>
+                <p class="text-xl text-red-100">
+                    <span class="font-bold">Reason:</span> Failed basic motor-skill validation. Subject is unable to operate a simple mouse.
+                    <br><br>
+                    Kya Hua Idiot Bhen! 😂
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let currentScreen = 'startScreen';
+        let tryCount = 0;
+        
+        // Function to switch screens
+        function showScreen(screenId) {
+            document.getElementById(currentScreen).classList.remove('active');
+            const newScreen = document.getElementById(screenId);
+            newScreen.classList.add('active');
+            currentScreen = screenId;
+            
+            if (screenId === 'q3Screen') {
+                startPrank();
+            }
+        }
+
+        // --- The Prank Logic ---
+        const button = document.getElementById('prankButton');
+        const counterText = document.getElementById('tryCounter');
+        
+        function startPrank() {
+            // Mouseover for desktop, touchstart for mobile
+            button.addEventListener('mouseover', moveButton);
+            button.addEventListener('touchstart', moveButton, { passive: true });
+            
+            // This click will almost never happen, but it's a fallback
+            button.addEventListener('click', () => {
+                showResult();
+            });
+        }
+        
+        function moveButton(event) {
+            // prevent touch from also triggering mouseover
+            if (event.type === 'touchstart') {
+                event.preventDefault();
+            }
+
+            tryCount++;
+            
+            // Show increasingly "technical" error messages
+            if (tryCount > 3) {
+                counterText.innerText = "Calibration Error... Recalibrating...";
+            }
+            if (tryCount > 6) {
+                counterText.innerText = "ERROR: Cursor alignment failed.";
+            }
+            if (tryCount > 9) {
+                counterText.innerText = "CRITICAL FAILURE: Input device non-responsive.";
+            }
+            
+            // After 10 tries, give up and show the result
+            if (tryCount > 10) {
+                showResult();
+                return;
+            }
+
+            // Get viewport dimensions, minus button size
+            const viewportWidth = window.innerWidth - button.clientWidth;
+            const viewportHeight = window.innerHeight - button.clientHeight;
+
+            // Generate random positions
+            let newTop = Math.floor(Math.random() * viewportHeight);
+            let newLeft = Math.floor(Math.random() * viewportWidth);
+            
+            // Apply new positions
+            button.style.top = newTop + 'px';
+            button.style.left = newLeft + 'px';
+        }
+        
+        function showResult() {
+            // Remove listeners to stop the button from moving
+            button.removeEventListener('mouseover', moveButton);
+            button.removeEventListener('touchstart', moveButton);
+
+            // Switch to the result screen
+            showScreen('resultScreen');
+            
+            // Animate the progress bar
+            const progressBar = document.getElementById('progressBar');
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Show the final punchline
+                    document.getElementById('finalResult').style.display = 'block';
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                }
+            }, 30); // 30ms * 100 = 3 second load
+        }
+
+    </script>
+
+</body>
+</html>
+
